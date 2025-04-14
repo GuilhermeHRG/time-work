@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="400" height="200"></canvas>
+  <script>
+    const vscode = acquireVsCodeApi();
+
+    window.addEventListener("message", event => {
+      const data = event.data;
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Minutos por Sessão',
+            data: data.values,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)'
+          }]
+        }
+      });
+    });
+
+    vscode.postMessage({ command: "fetchSessions" });
+  </script>
+</body>
+</html>
